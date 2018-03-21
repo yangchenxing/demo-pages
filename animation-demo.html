@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Animation Demo</title>
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+  <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="jqueryui/style.css">
+  <script>
+  function calcAnimatedValue(config, value, curr, fmt) {
+      var out = curr;
+      config.forEach((x)=>{
+          if (x.min <= value && value <= x.max) {
+             out = fmt(x.from + (x.to - x.from) * (value - x.min) / (x.max - x.min));
+          }
+      });
+      return out;
+  }
+  function calcAnimatedItems(value) {
+      $(".animated-item").each(function() {
+          $(this).css("opacity",
+                      calcAnimatedValue($(this).data("animated-opacity"),
+                                        value,
+                                        $(this).css("opacity"),
+                                        function(x){return x}));
+          $(this).css("top",
+                      calcAnimatedValue($(this).data("animated-top"),
+                                        value,
+                                        $(this).css("top"),
+                                        function(x){return Math.round(x) + "px"}));
+      }); 
+  }
+  $(function() {
+    $(".animated-item").each(function () {
+       $(this).data("animated-opacity", JSON.parse($(this).attr("animated-opacity"))); 
+       $(this).data("animated-top", JSON.parse($(this).attr("animated-top"))); 
+    });
+    calcAnimatedItems(0);
+    $( "#slider" ).slider({
+        min: 0,
+        max: 100,
+        slide: function(event, ui) {
+			calcAnimatedItems(ui.value);
+        }
+    });
+  });
+  </script>
+  <style>
+    #bound {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 1140px;
+        height: 640px;
+        border: 1px solid black; 
+    }
+    #mock-shadow1 {
+        z-index: -10;
+        position: fixed;
+        left: 780px;
+        top: 240px;
+        width: 200px;
+        height: 400px;
+        background-color: grey;
+        opacity: 0;
+    }
+    #mock-image1 {
+        position: fixed;
+        left: 800px;
+        top: 240px;
+        width: 200px;
+        height: 400px;
+        background-color: blue;
+        opacity: 0;
+    }
+    #mock-shadow2 {
+        z-index: -10;
+        position: fixed;
+        left: 780px;
+        top: 240px;
+        width: 200px;
+        height: 400px;
+        background-color: grey;
+        opacity: 0;
+    }
+    #mock-image2 {
+        position: fixed;
+        left: 800px;
+        top: 240px;
+        width: 200px;
+        height: 400px;
+        background-color: green;
+        opacity: 0;
+    }
+    #mock-text1 {
+        position: fixed;
+        left: 50px;
+        top: 260px;
+        width: 400px;
+        height: 120px;
+        background-color: yellow;
+        opacity: 1;
+    }
+    #mock-text2 {
+        position: fixed;
+        left: 50px;
+        top: 260px;
+        width: 400px;
+        height: 120px;
+        background-color: red;
+        opacity: 0;
+    }
+  </style>
+</head>
+<body>
+ 
+<div id="slider"></div>
+<div id="bound"></div>
+<div id="mock-shadow1" class="animated-item"
+     animated-opacity='[{"min":0,"max":30,"from":0,"to":1},{"min":50,"max":80,"from":1,"to":0}]'
+     animated-top='[{"min":0,"max":30,"from":240,"to":140},{"min":50,"max":80,"from":140,"to":40}]'>
+</div>
+<div id="mock-image1" class="animated-item"
+     animated-opacity='[{"min":0,"max":30,"from":0,"to":1},{"min":50,"max":80,"from":1,"to":0}]'
+     animated-top='[{"min":0,"max":30,"from":240,"to":120},{"min":50,"max":80,"from":120,"to":0}]'>
+商品图1
+</div>
+<div id="mock-shadow2" class="animated-item"
+     animated-opacity='[{"min":50,"max":80,"from":0,"to":1}]'
+     animated-top='[{"min":50,"max":80,"from":240,"to":140}]'>
+</div>
+<div id="mock-image2" class="animated-item"
+     animated-opacity='[{"min":50,"max":80,"from":0,"to":1}]'
+     animated-top='[{"min":50,"max":80,"from":240,"to":120}]'>
+商品图2
+</div>
+<div id="mock-text1" class="animated-item"
+     animated-opacity='[{"min":50,"max":80,"from":1,"to":0}]'
+     animated-top='[]'>
+文字图1
+</div>
+<div id="mock-text2" class="animated-item"
+     animated-opacity='[{"min":50,"max":80,"from":0,"to":1}]'
+     animated-top='[]'>
+文字图2
+</div>
+ 
+ 
+</body>
+</html>
