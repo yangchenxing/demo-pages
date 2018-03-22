@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Animation Demo</title>
+	<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+	<script
+	  src="https://code.jquery.com/jquery-3.1.1.min.js"
+	  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	  crossorigin="anonymous"></script>
+	<script src="semantic/dist/semantic.min.js"></script>
+    <style>
+		.fake-normal-image {
+            height: 120px;
+            background-color: grey;
+            border: 1px solid black;
+        }
+    	.fake-text {
+            height: 40px;
+            background-color: grey;
+		}
+        #animation-container {
+			height: 360px;
+            border: 1px solid black;
+		}
+        #image1 {
+            position: relative;
+            width: 20%;
+            height: 60%;
+            top: 20%;
+            left: 60%;
+            background-color: blue;
+        }
+    </style>
+    <script>
+        function calcAnimeValue(config, bottom, progress, curr, fmt) {
+            var out = curr;
+            config.segments.forEach((x)=>{
+                if (x.bottom <= progress && progress <= x.top) {
+                    out = fmt(x.from + (x.to - x.from) * (progress - x.bottom) / (x.top - x.bottom));
+                    if (config.hasOwnProperty("post")) {
+                        out = out + config.post;
+                    }
+                }
+            });
+            console.log(out);
+            return out;
+        }
+        function calcAnimes(bottom, progress) {
+            $(".anime").each(function (){
+                $(this).css("opacity",
+                            calcAnimeValue($(this).data("anime-opacity"),
+                                           bottom, progress,
+                                           $(this).css("opacity"),
+                                           (x)=>{return x}));
+                $(this).css("top",
+                            calcAnimeValue($(this).data("anime-top"),
+                                           bottom, progress,
+                                           $(this).css("top"),
+                                           (x)=>{return x}));
+            });
+        }
+        function update() {
+            pos = $("#animation-container").offset();
+            winH = $(window).height();
+            bottom = -(pos.top - $(document).scrollTop() - winH);
+            progress = 0;
+            if (bottom > 0) {
+                if (bottom > winH) {
+                    progress = 1;
+                } else {
+                    progress = bottom / winH;
+                }
+            }
+            calcAnimes(bottom, progress);
+        }
+        $(function(){
+            $(".anime").each(function() {
+                $(this).data("anime-opacity", JSON.parse($(this).attr("anime-opacity")));
+                $(this).data("anime-top", JSON.parse($(this).attr("anime-top")));
+            });
+            update();
+        	$(document).scroll(update);
+        });
+	</script>
+</head>
+<body>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+        <div class="fake-text"></div>
+        <br/>
+        <div id="animation-container">
+            <div id="image1" class="anime" 
+                 anime-opacity='{"segments":[{"bottom":0,"top":0.5,"from":0,"to":1}]}'
+                 anime-top='{"segments":[{"bottom":0,"top":0.5,"from":30,"to":20,"post":"%"}]}'>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+	<div class="ui raised text container segment">
+		<h2>卡片</h2>
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+            <div class="column">
+                <div class="fake-normal-image"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<html>
